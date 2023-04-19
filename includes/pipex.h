@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:25:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/17 20:38:54 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:27:27 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 # define PIPEX_H
 
 # include <libft.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
 #endif
