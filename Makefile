@@ -2,28 +2,33 @@ NAME	= pipex
 
 SRCS	= src/pipex.c
 
-OBJS	= $(SRCS:.c=.o)
+OBJS	= $(SRCS:src/%.c=obj/%.o)
 
 INCS	= -I./includes -I./Libft
+
+FLAGS	= -Wall -Wextra -Werror -fsanitize=address -g
 
 HEADER	= ./includes/pipex.h
 
 LIBFT	= -L./Libft -lft
 
-all:	lib $(NAME)
+all:	mkdir lib $(NAME)
 
-%.o: %.c $(HEADER) Makefile
-	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+mkdir:
+	@mkdir -p obj
+
+obj/%.o: src/%.c $(HEADER) Makefile
+	$(CC) $(FLAGS) $(INCS) -c $< -o $@
 
 $(NAME):	$(OBJS)
-	$(CC) $(FLAGS) $(INCS) $(LIBFT) $(OBJS) -o $(NAME)
+	$(CC) $(FLAGS) $(INCS) $(OBJS) $(LIBFT) -o $(NAME)
 
 lib:
-	make -C Libft
+	@make -C Libft
 
 clean:
 	$(MAKE) clean -C Libft
-	rm -f $(OBJS)
+	rm -rf obj
 
 fclean: clean
 	$(MAKE) fclean -C Libft

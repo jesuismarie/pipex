@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:25:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/20 20:30:37 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:10:09 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <libft.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <stdio.h>
 
 typedef struct s_pipex
 {
@@ -26,6 +27,5 @@ typedef struct s_pipex
 	int		fd1;
 	int		fd2;
 }	t_pipex;
-
 
 #endif
