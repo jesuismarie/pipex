@@ -6,58 +6,23 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:28:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/21 17:18:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/21 19:33:18 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	free_malloc(char **str)
+void	children(t_pipex data, char **cmd)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-		free(str[i++]);
-	free(str);
-	str = NULL;
-}
-
-char	*path_find(char **envp)
-{
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], "PATH=", 5))
-			return (ft_strchr(envp[i], '/'));
-		i++;
-	}
-	return (0);
-}
-
-int	find_cmd(t_pipex data, char **cmd)
-{
-	char	*s;
-	char	*tmp;
-	int		i;
-
-	i = -1;
-	s = ft_strjoin("/", *cmd);
-	while (data.path[++i])
-	{
-		tmp = ft_strjoin(data.path[i], s);
-		
-		printf("%s\n", tmp);
-	}
-	return (0);
+	dup2(data.fd1, 0);
+	
+	execve(*cmd, cmd, data.ep);
 }
 
 void	pipex(t_pipex data)
 {
 	int		i;
-	// pid_t	id;
+	pid_t	id;
 	char	**cmd;
 
 	i = 2;
@@ -65,18 +30,17 @@ void	pipex(t_pipex data)
 	{
 		cmd = ft_split(data.av[i], ' ');
 		if (!cmd)
+		{
+			perror("Error🐙");
 			exit(1);
-		if (cmd[0] || ft_strchr(cmd[0], '/'))
-		{
-			printf("-----------\n");
-			find_cmd(data, cmd);
 		}
-		else
+		if (cmd[0] && !ft_strchr(cmd[0], '/'))
+			*cmd = find_cmd(data, cmd);
+		id = fork();
+		if (!id)
 		{
-			// execve;
+			children(data, cmd);
 		}
-		// id = fork();
-		// if (!id)
 		free_malloc(cmd);
 		i++;
 	}

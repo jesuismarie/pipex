@@ -1,12 +1,12 @@
 NAME	= pipex
 
-SRCS	= src/pipex.c
+SRCS	= src/pipex.c src/pipex_utils.c
 
 OBJS	= $(SRCS:src/%.c=obj/%.o)
 
 INCS	= -I./includes -I./Libft
 
-FLAGS	= -Wall -Wextra -Werror -fsanitize=address -g
+FLAGS	= -Wall -Wextra -Werror #-fsanitize=address -g
 
 HEADER	= ./includes/pipex.h
 
