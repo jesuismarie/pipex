@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 17:53:23 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/21 18:04:36 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/22 18:39:33 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,27 @@ void	free_malloc(char **str)
 		free(str[i++]);
 	free(str);
 	str = NULL;
+}
+
+void	err(void)
+{
+	perror("Error👾");
+	exit(1);
+}
+
+void	close_fds(t_pipex data, int **fds)
+{
+	int	i;
+
+	i = 0;
+	while (i < data.ac - 4)
+	{
+		close(fds[i][0]);
+		close(fds[i][1]);
+		free(fds[i]);
+		i++;
+	}
+	free(fds);
 }
 
 char	*path_find(char **envp)
@@ -45,6 +66,7 @@ char	*find_cmd(t_pipex data, char **cmd)
 
 	i = -1;
 	s = ft_strjoin("/", *cmd);
+	free(*cmd);
 	while (data.path[++i])
 	{
 		tmp = ft_strjoin(data.path[i], s);
@@ -54,5 +76,6 @@ char	*find_cmd(t_pipex data, char **cmd)
 			return (tmp);
 		}
 	}
+	free(s);
 	return (0);
 }
