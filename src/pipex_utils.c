@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 17:53:23 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/22 18:39:33 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/23 21:18:24 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char	*find_cmd(t_pipex data, char **cmd)
 			free(s);
 			return (tmp);
 		}
+		free(tmp);
 	}
 	free(s);
 	return (0);

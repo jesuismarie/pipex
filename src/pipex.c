@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:28:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/22 20:38:18 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/23 21:19:37 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,6 @@ int	main(int argc, char **argv, char **envp)
 		pipex(data);
 	while (wait(NULL) != -1)
 		;
+	free_malloc(data.path);
+	return (0);
 }
