@@ -1,42 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/15 20:28:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/24 21:40:12 by mnazarya         ###   ########.fr       */
+/*   Created: 2023/04/22 19:01:28 by mnazarya          #+#    #+#             */
+/*   Updated: 2023/04/24 20:52:26 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-int	**pipe_fds(t_pipex data)
+void	err(t_pipex data, int **fds)
 {
-	int	i;
-	int	**fds;
-
-	i = -1;
-	fds = malloc(sizeof(int *) * (data.ac - 4));
-	if (!fds)
-		error();
-	while (++i < data.ac - 4)
-	{
-		fds[i] = malloc(sizeof(int) * 2);
-		if (!fds[i])
-			error();
-		if (pipe(fds[i]) == -1)
-			pipe_error(fds, i);
-	}
-	return (fds);
+	perror("Error👾");
+	close_fds(data, fds);
+	exit(1);
 }
 
-static void	children(t_pipex data, int **fds, int i)
+void	pipe_error(int **fds, int i)
 {
-	if (i == 2)
+	int	j;
+
+	j = -1;
+	while (++j < i)
 	{
-		if (dup2(data.fd1, STDIN_FILENO) == -1)
+		close(fds[j][0]);
+		close(fds[j][1]);
+		free(fds[j]);
+	}
+	free(fds[j]);
+	free(fds);
+}
+
+static void	children_heredoc(t_pipex data, int **fds, int i)
+{
+	if (i == 3)
+	{
+		if (dup2(fds[0][0], STDIN_FILENO) == -1)
 			err(data, fds);
 		if (dup2(fds[i - 2][1], STDOUT_FILENO) == -1)
 			err(data, fds);
@@ -56,12 +58,11 @@ static void	children(t_pipex data, int **fds, int i)
 			err(data, fds);
 	}
 	close_fds(data, fds);
-	close(data.fd1);
 	close(data.fd2);
 	free_malloc(data.path);
 }
 
-static void	pxik(t_pipex data, int **fds, int i)
+static void	pxik_heredoc(t_pipex data, int **fds, int i)
 {
 	pid_t	id;
 	char	**cmd;
@@ -76,50 +77,36 @@ static void	pxik(t_pipex data, int **fds, int i)
 		err(data, fds);
 	if (!id)
 	{
-		children(data, fds, i);
+		children_heredoc(data, fds, i);
 		execve(*cmd, cmd, data.ep);
 		error();
 	}
 	free_malloc(cmd);
 }
 
-void	pipex(t_pipex data)
+void	pipex_heredoc(t_pipex data)
 {
 	int		i;
 	int		**fds;
+	char	*str;
+	char	*lim;
 
 	fds = pipe_fds(data);
-	i = 1;
+	lim = ft_strjoin(data.av[2], "\n");
+	while (1)
+	{
+		write(1, ">", 1);
+		str = get_next_line(0);
+		if (!str || !ft_strcmp(lim, str))
+			break ;
+		ft_putstr_fd(str, fds[0][1]);
+		free(str);
+	}
+	free(str);
+	i = 2;
 	while (++i < data.ac - 1)
-		pxik(data, fds, i);
-	close_fds(data, fds);
-	close(data.fd1);
+		pxik_heredoc(data, fds, i);
+	free(lim);
 	close(data.fd2);
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_pipex	data;
-
-	if (argc < 5)
-		return (0);
-	data.ac = argc;
-	data.av = argv;
-	data.ep = envp;
-	data.path = ft_split(path_find(envp), ':');
-	if (argc > 5 && !ft_strcmp(argv[1], "here_doc"))
-	{
-		data.fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		pipex_heredoc(data);
-	}
-	else
-	{
-		data.fd1 = open(argv[1], O_RDONLY);
-		data.fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		pipex(data);
-	}
-	while (wait(NULL) != -1)
-		;
-	free_malloc(data.path);
-	return (0);
+	close_fds(data, fds);
 }

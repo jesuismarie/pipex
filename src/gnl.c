@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gnl.c                                              :+:      :+:    :+:   */
+/*   gnl_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:12:02 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/22 21:27:15 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:12:07 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-char	*ft_join(char *s1, char *s2)
+static char	*ft_join(char *s1, char *s2)
 {
 	char	*str;
 	size_t	i;
@@ -35,7 +35,7 @@ char	*ft_join(char *s1, char *s2)
 	return (str);
 }
 
-char	*read_str(int fd, char *s)
+static char	*read_str(int fd, char *s)
 {
 	char	buf[2];
 	int		n;
@@ -55,7 +55,7 @@ char	*read_str(int fd, char *s)
 	return (s);
 }
 
-char	*ft_find(char *s)
+static char	*ft_find(char *s)
 {
 	int		i;
 	char	*str;
@@ -80,7 +80,7 @@ char	*ft_find(char *s)
 	return (str);
 }
 
-char	*ft_remainder(char *s)
+static char	*ft_remainder(char *s)
 {
 	int		i;
 	int		j;

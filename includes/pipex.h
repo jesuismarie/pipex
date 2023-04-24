@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:25:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/22 21:14:44 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/04/24 21:12:57 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,15 @@ typedef struct s_pipex
 }	t_pipex;
 
 void	free_malloc(char **str);
-void	err(void);
-void	close_fds(t_pipex data, int **fds);
+void	error(void);
+void	err(t_pipex data, int **fds);
+void	pipe_error(int **fds, int i);
+int		**pipe_fds(t_pipex data);
 char	*path_find(char **envp);
 char	*find_cmd(t_pipex data, char **cmd);
-void	pipex_heredoc(t_pipex data);
+void	close_fds(t_pipex data, int **fds);
 char	*get_next_line(int fd);
+void	pipex(t_pipex data);
+void	pipex_heredoc(t_pipex data);
 
 #endif
