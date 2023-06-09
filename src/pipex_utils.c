@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 17:53:23 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/24 20:41:07 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/06/09 13:21:49 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,17 @@ char	*find_cmd(t_pipex data, char **cmd)
 
 	i = -1;
 	s = ft_strjoin("/", *cmd);
-	free(*cmd);
 	while (data.path[++i])
 	{
 		tmp = ft_strjoin(data.path[i], s);
 		if (!access(tmp, X_OK))
 		{
+			free(*cmd);
 			free(s);
 			return (tmp);
 		}
 		free(tmp);
 	}
 	free(s);
-	return (0);
+	return (*cmd);
 }
