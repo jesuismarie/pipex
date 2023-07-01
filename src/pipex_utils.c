@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 17:53:23 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/06/09 13:21:49 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:22:10 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	close_fds(t_pipex data, int **fds)
 	free(fds);
 }
 
-char	*path_find(char **envp)
+char	**path_find(char **envp)
 {
 	int	i;
 
@@ -52,10 +52,10 @@ char	*path_find(char **envp)
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))
-			return (ft_strchr(envp[i], '/'));
+			return (ft_split(ft_strchr(envp[i], '/'), ':'));
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
 
 char	*find_cmd(t_pipex data, char **cmd)

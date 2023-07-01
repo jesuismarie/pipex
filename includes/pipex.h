@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:25:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/24 21:12:57 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:11:12 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	error(void);
 void	err(t_pipex data, int **fds);
 void	pipe_error(int **fds, int i);
 int		**pipe_fds(t_pipex data);
-char	*path_find(char **envp);
+char	**path_find(char **envp);
 char	*find_cmd(t_pipex data, char **cmd);
 void	close_fds(t_pipex data, int **fds);
 char	*get_next_line(int fd);

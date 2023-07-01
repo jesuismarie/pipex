@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:28:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/04/24 21:40:12 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/07/01 18:23:02 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,9 @@ int	main(int argc, char **argv, char **envp)
 	data.ac = argc;
 	data.av = argv;
 	data.ep = envp;
-	data.path = ft_split(path_find(envp), ':');
+	data.path = path_find(envp);
+	if (!data.path)
+		return (1);
 	if (argc > 5 && !ft_strcmp(argv[1], "here_doc"))
 	{
 		data.fd2 = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
